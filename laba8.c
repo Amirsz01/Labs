@@ -19,6 +19,8 @@ void process_line( char buffer[] )
 	char prev_c;
 	int flag;
 	int found;
+	int obr;
+	obr = YES;
 	flag = NO;
 	found = NO;
 	prev_c = ' ';
@@ -28,9 +30,9 @@ void process_line( char buffer[] )
 	do
 	{
 		c = *buf_ptr;
-		if( c == ' ' || c == '.' || c == ',' || c == '\n' || c == '\0')
+		if(!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')))
 		{
-			if( flag == YES )
+			if( flag == YES && obr == YES)
 			{
 				end = buf_ptr - 1;
 				if( found == YES )
@@ -43,16 +45,20 @@ void process_line( char buffer[] )
 			}
 			flag = NO;
 			found = NO;
+			obr = YES;
 		}
 		else
 		{
-			if( flag == NO )
+			if( flag == NO ){
 				begin = buf_ptr;
+				flag = YES;
+			}
 			if(((prev_c == 'a') || (prev_c == 'e') || (prev_c == 'o') || (prev_c == 'u') || (prev_c == 'y')) && ((c == 'a') || (c == 'e') || (c == 'o') || (c == 'u') || (c == 'y')))
 			{
 					found = YES;
 			}
-			flag = YES;
+			if(c >= '0' && c <= '9')
+			obr = NO;
 		}
 		prev_c = c;
 		buf_ptr++;
