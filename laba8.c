@@ -6,7 +6,7 @@ void process_line( char buffer[] );
 void main( void )
 {
 	char line[MAXLINE];
-	gets( line );
+	fgets(line,sizeof(line),stdin);
 	process_line( line );
 	puts( line );
 }
