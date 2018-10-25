@@ -76,83 +76,13 @@ struct item* Appendlist(struct item** headRef)
 	return(lst);
 }
 
-int strcmp(char *str1, char *str2)
-{
-	int i = 0;
-	while (*str1 && *str2)
-	{
-		if (!(*str1 == *str2))
-		{
-			i++;
-			if (*str1 < *str2)
-			{
-				i = -i;
-			}
-			break;
-		}
-		str1++;
-		str2++;
-	}
-	if (!i) 
-	{
-		if (*str1 || *str2) 
-		{
-			if (!*str2)
-				i = 1;
-		}
-	}
-	return i;
-}
-
-void strcpy(char *str1, char *str2)
-{
-	int recordEnd = NO;
-	char buf;
-	char *end;
-	while (!recordEnd)
-	{
-		if (*str1 == '\0')
-		{
-			end = str2;
-			while (*str2) 
-			{
-				*str1++ = *str2++;
-			}
-			*str1 = '\0';
-			*end = '\0';
-			recordEnd = YES;
-		}
-		else
-		{
-			if (*str2 == '\0')
-			{
-				end = str1;
-				while (*str1)
-				{
-					*str2++ = *str1++;
-				}
-				*str2 = '\0';
-				*end = '\0';
-				recordEnd = YES;
-			}
-			else
-			{
-				buf = *str1;
-				*str1 = *str2;
-				*str2 = buf;
-				str1++;
-				str2++;
-			}
-		}
-	}
-}
-
 void structFor(struct item** headRef, int structType, int count)
 {
 	struct item* current;
 	struct item* next;
 	int noSwap;
 	int iBuf;
+	char cBuf[MAXLEN];
 	switch (structType)
 	{
 	case 1:
@@ -168,8 +98,12 @@ void structFor(struct item** headRef, int structType, int count)
 					iBuf = current->id;
 					current->id = next->id;
 					next->id = iBuf;
+					strcpy(cBuf, current->name);
 					strcpy(current->name, next->name);
+					strcpy(next->name, cBuf);
+					strcpy(cBuf, current->type);
 					strcpy(current->type, next->type);
+					strcpy(next->type, cBuf);
 					iBuf = current->price;
 					current->price = next->price;
 					next->price = iBuf;
@@ -195,8 +129,12 @@ void structFor(struct item** headRef, int structType, int count)
 					iBuf = current->id;
 					current->id = next->id;
 					next->id = iBuf;
+					strcpy(cBuf, current->name);
 					strcpy(current->name, next->name);
+					strcpy(next->name, cBuf);
+					strcpy(cBuf, current->type);
 					strcpy(current->type, next->type);
+					strcpy(next->type, cBuf);
 					iBuf = current->price;
 					current->price = next->price;
 					next->price = iBuf;
@@ -214,11 +152,10 @@ void structFor(struct item** headRef, int structType, int count)
 	}
 }
 
-int inputData(struct item** headRef)
+void inputData(struct item** headRef , int *countItemsRet, int *itemNumRet)
 {
 	FILE *fpin;
 	FILE *finit;
-	int mass[2];
 	int dataNum;
 	int itemNum = 0;
 	int inItem = NO;
@@ -289,9 +226,8 @@ int inputData(struct item** headRef)
 		}
 	}
 	fclose(fpin); // закрыть входной файл
-	mass[0] = itemNum;
-	mass[1] = countItems;
-	return &mass;
+	*itemNumRet = itemNum;
+	*countItemsRet = countItems;
 }
 
 void recordData(struct item** headRef, int itemNum) 
@@ -331,13 +267,10 @@ void main(void)
 	int callback_item;
 	int callback_printType;
 	int callback_basketTypes[COUNT_CATEGORIES+1];
-	int *returnData;
 	/* Объявление параметров консоли*/
 	system("chcp 1251");
 	system("cls");
-	returnData = inputData(&head_ptr);
-	countItems = *(returnData+1);
-	itemNum = *returnData;
+	inputData(&head_ptr, &countItems , &itemNum);
 	do
 	{
 		system("cls");
