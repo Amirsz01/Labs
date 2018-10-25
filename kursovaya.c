@@ -4,7 +4,6 @@
 #define YES 1
 #define NO 0
 #include <stdio.h>
-#include <malloc.h>
 #include <stdlib.h>
 struct item
 {
@@ -218,6 +217,7 @@ void structFor(struct item** headRef, int structType, int count)
 int inputData(struct item** headRef)
 {
 	FILE *fpin;
+	FILE *finit;
 	int mass[2];
 	int dataNum;
 	int itemNum = 0;
@@ -227,8 +227,12 @@ int inputData(struct item** headRef)
 	char line[MAXLEN];
 	struct item* item_ptr = NULL;
 	fpin = fopen("test.txt", "r"); // открыть файл для чтения
-	if (fpin == NULL)
-		return 0; // ошибка при открытии файла
+	if (fpin == NULL) 
+	{
+		finit = fopen("test.txt", "w");
+		fclose(finit);
+		fpin = fopen("test.txt", "r");
+	}
 	fscanf(fpin, "%d\n", &countItems);
 	while (!feof(fpin))// цикл до конца входного файла
 	{
@@ -457,12 +461,17 @@ void main(void)
 			if (callback_item == 1)
 			{
 				head_ptr = deleteHead(item_ptr);
+				
 			}
 			else
 			{
 				deleteItem(item_ptr, head_ptr);
 			}
 			itemNum--;
+			if (!itemNum)
+			{
+				head_ptr = init(0);
+			}
 			break;
 		case 4:
 			system("cls");
