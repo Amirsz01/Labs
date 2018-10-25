@@ -12,15 +12,15 @@ struct item
 	char type[50];
 	char name[MAXLEN];
 	int price;
-	struct item *ptr; // указатель на следующий элемент
+	struct item *ptr; // СѓРєР°Р·Р°С‚РµР»СЊ РЅР° СЃР»РµРґСѓСЋС‰РёР№ СЌР»РµРјРµРЅС‚
 };
-/* Объявление начала списка*/
-struct item* init(int a) // Принимаемые данные для головы списка
+/* РћР±СЉСЏРІР»РµРЅРёРµ РЅР°С‡Р°Р»Р° СЃРїРёСЃРєР°*/
+struct item* init(int a) // РџСЂРёРЅРёРјР°РµРјС‹Рµ РґР°РЅРЅС‹Рµ РґР»СЏ РіРѕР»РѕРІС‹ СЃРїРёСЃРєР°
 {
 	struct item *lst;
 	lst = (struct item*)malloc(sizeof(struct item));
 	lst->id = a;
-	lst->ptr = NULL; // это последний узел списка
+	lst->ptr = NULL; // СЌС‚Рѕ РїРѕСЃР»РµРґРЅРёР№ СѓР·РµР» СЃРїРёСЃРєР°
 	return(lst);
 }
 
@@ -28,20 +28,20 @@ struct item * deleteHead(struct item *head)
 {
 	struct item *temp;
 	temp = head->ptr;
-	free(head); // освобождение памяти текущего корня
-	return(temp); // новый корень списка
+	free(head); // РѕСЃРІРѕР±РѕР¶РґРµРЅРёРµ РїР°РјСЏС‚Рё С‚РµРєСѓС‰РµРіРѕ РєРѕСЂРЅСЏ
+	return(temp); // РЅРѕРІС‹Р№ РєРѕСЂРµРЅСЊ СЃРїРёСЃРєР°
 }
 
 void deleteItem(struct item *lst, struct item *head)
 {
 	struct item *temp;
 	temp = head;
-	while (temp->ptr != lst) // просматриваем список начиная с корня
-	{ // пока не найдем узел, предшествующий lst
+	while (temp->ptr != lst) // РїСЂРѕСЃРјР°С‚СЂРёРІР°РµРј СЃРїРёСЃРѕРє РЅР°С‡РёРЅР°СЏ СЃ РєРѕСЂРЅСЏ
+	{ // РїРѕРєР° РЅРµ РЅР°Р№РґРµРј СѓР·РµР», РїСЂРµРґС€РµСЃС‚РІСѓСЋС‰РёР№ lst
 		temp = temp->ptr;
 	}
-	temp->ptr = lst->ptr; // переставляем указатель
-	free(lst); // освобождаем память удаляемого узла
+	temp->ptr = lst->ptr; // РїРµСЂРµСЃС‚Р°РІР»СЏРµРј СѓРєР°Р·Р°С‚РµР»СЊ
+	free(lst); // РѕСЃРІРѕР±РѕР¶РґР°РµРј РїР°РјСЏС‚СЊ СѓРґР°Р»СЏРµРјРѕРіРѕ СѓР·Р»Р°
 }
 
 void freeStruct(struct item ** head)
@@ -63,12 +63,12 @@ struct item* Appendlist(struct item** headRef)
 	struct item* lst;
 	lst = (struct item*)malloc(sizeof(struct item));
 	lst->ptr = NULL;
-	// если список пуст
+	// РµСЃР»Рё СЃРїРёСЃРѕРє РїСѓСЃС‚
 	if (current == NULL) {
 		*headRef = lst;
 	}
 	else {
-		// иначе
+		// РёРЅР°С‡Рµ
 		while (current->ptr != NULL) {
 			current = current->ptr;
 		}
@@ -226,15 +226,15 @@ int inputData(struct item** headRef)
 	int i = 0;
 	char line[MAXLEN];
 	struct item* item_ptr = NULL;
-	fpin = fopen("test.txt", "r"); // открыть файл для чтения
+	fpin = fopen("test.txt", "r"); // РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» РґР»СЏ С‡С‚РµРЅРёСЏ
 	if (fpin == NULL)
-		return 0; // ошибка при открытии файла
+		return 0; // РѕС€РёР±РєР° РїСЂРё РѕС‚РєСЂС‹С‚РёРё С„Р°Р№Р»Р°
 	fscanf(fpin, "%d\n", &countItems);
-	while (!feof(fpin))// цикл до конца входного файла
+	while (!feof(fpin))// С†РёРєР» РґРѕ РєРѕРЅС†Р° РІС…РѕРґРЅРѕРіРѕ С„Р°Р№Р»Р°
 	{
 		fscanf(fpin, "%s\n", line);
 		if (line == NULL)
-			break; // файл исчерпан
+			break; // С„Р°Р№Р» РёСЃС‡РµСЂРїР°РЅ
 		if (*line == '{')
 		{
 			inItem = YES;
@@ -284,7 +284,7 @@ int inputData(struct item** headRef)
 			}
 		}
 	}
-	fclose(fpin); // закрыть входной файл
+	fclose(fpin); // Р·Р°РєСЂС‹С‚СЊ РІС…РѕРґРЅРѕР№ С„Р°Р№Р»
 	mass[0] = itemNum;
 	mass[1] = countItems;
 	return &mass;
@@ -294,7 +294,7 @@ void recordData(struct item** headRef, int itemNum)
 {
 	FILE *fpin;
 	struct item* current = *headRef;
-	fpin = fopen("test.txt", "w"); // открыть файл для чтения
+	fpin = fopen("test.txt", "w"); // РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» РґР»СЏ С‡С‚РµРЅРёСЏ
 	fprintf(fpin, "%d\n", itemNum);
 	while (current != NULL) 
 	{
@@ -306,18 +306,18 @@ void recordData(struct item** headRef, int itemNum)
 		fprintf(fpin, "}\n");
 		current = current->ptr;
 	}
-	fclose(fpin); // закрыть входной файл
+	fclose(fpin); // Р·Р°РєСЂС‹С‚СЊ РІС…РѕРґРЅРѕР№ С„Р°Р№Р»
 }
 
 void main(void)
 {
 	struct item* head_ptr = init(0);
-	/* Объявление начала списка*/
+	/* РћР±СЉСЏРІР»РµРЅРёРµ РЅР°С‡Р°Р»Р° СЃРїРёСЃРєР°*/
 	struct item* item_ptr = NULL;
-	/* Объявление строковых переменных*/
+	/* РћР±СЉСЏРІР»РµРЅРёРµ СЃС‚СЂРѕРєРѕРІС‹С… РїРµСЂРµРјРµРЅРЅС‹С…*/
 	char callback_name[MAXLEN];
-	char categories[COUNT_CATEGORIES][50] = {"Хлеб","Молочное", "Мясное", "Печеное", "Напитки", "Сладости", "Овощи", "Фрукты"};
-	/* Объявление числовых переменных*/
+	char categories[COUNT_CATEGORIES][50] = {"РҐР»РµР±","РњРѕР»РѕС‡РЅРѕРµ", "РњСЏСЃРЅРѕРµ", "РџРµС‡РµРЅРѕРµ", "РќР°РїРёС‚РєРё", "РЎР»Р°РґРѕСЃС‚Рё", "РћРІРѕС‰Рё", "Р¤СЂСѓРєС‚С‹"};
+	/* РћР±СЉСЏРІР»РµРЅРёРµ С‡РёСЃР»РѕРІС‹С… РїРµСЂРµРјРµРЅРЅС‹С…*/
 	int itemNum;
 	int countItems;
 	int i=0;
@@ -328,7 +328,7 @@ void main(void)
 	int callback_printType;
 	int callback_basketTypes[COUNT_CATEGORIES+1];
 	int *returnData;
-	/* Объявление параметров консоли*/
+	/* РћР±СЉСЏРІР»РµРЅРёРµ РїР°СЂР°РјРµС‚СЂРѕРІ РєРѕРЅСЃРѕР»Рё*/
 	system("chcp 1251");
 	system("cls");
 	returnData = inputData(&head_ptr);
@@ -337,7 +337,7 @@ void main(void)
 	do
 	{
 		system("cls");
-		printf("[0] Выйти из программы\n[1] Добавить новый товар\n[2] Редактировать товар\n[3] Удалить товар\n[4] Вывести товары в алфавитном порядке\n[5] Подобрать минимальный набор товаров\nВыберите пункт из списка : ");
+		printf("[0] Р’С‹Р№С‚Рё РёР· РїСЂРѕРіСЂР°РјРјС‹\n[1] Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІС‹Р№ С‚РѕРІР°СЂ\n[2] Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ С‚РѕРІР°СЂ\n[3] РЈРґР°Р»РёС‚СЊ С‚РѕРІР°СЂ\n[4] Р’С‹РІРµСЃС‚Рё С‚РѕРІР°СЂС‹ РІ Р°Р»С„Р°РІРёС‚РЅРѕРј РїРѕСЂСЏРґРєРµ\n[5] РџРѕРґРѕР±СЂР°С‚СЊ РјРёРЅРёРјР°Р»СЊРЅС‹Р№ РЅР°Р±РѕСЂ С‚РѕРІР°СЂРѕРІ\nР’С‹Р±РµСЂРёС‚Рµ РїСѓРЅРєС‚ РёР· СЃРїРёСЃРєР° : ");
 		scanf("%d", &callback_main);
 		switch (callback_main) {
 		case 1: 
@@ -346,13 +346,13 @@ void main(void)
 			{
 				printf("[%d] %s\n", i+1, &categories[i]);
 			}
-			printf("Выберите тип товара : ");
+			printf("Р’С‹Р±РµСЂРёС‚Рµ С‚РёРї С‚РѕРІР°СЂР° : ");
 			scanf("%d", &callback_type);
 			system("cls");
-			printf("Введите название товара : ");
+			printf("Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ С‚РѕРІР°СЂР° : ");
 			scanf("%s", &callback_name);
 			system("cls");
-			printf("Введите цену товара : ");
+			printf("Р’РІРµРґРёС‚Рµ С†РµРЅСѓ С‚РѕРІР°СЂР° : ");
 			scanf("%d", &callback_price);
 			countItems++;
 			if (itemNum == 0)
@@ -383,11 +383,11 @@ void main(void)
 			system("cls");
 			if (!itemNum)
 			{
-				printf("Нет товаров\n");
+				printf("РќРµС‚ С‚РѕРІР°СЂРѕРІ\n");
 				system("pause");
 				break;
 			}
-			printf("Выберите товар, который хотите изменить : \n");
+			printf("Р’С‹Р±РµСЂРёС‚Рµ С‚РѕРІР°СЂ, РєРѕС‚РѕСЂС‹Р№ С…РѕС‚РёС‚Рµ РёР·РјРµРЅРёС‚СЊ : \n");
 			item_ptr = head_ptr;
 			i = 1;
 			while (item_ptr != NULL)
@@ -403,18 +403,18 @@ void main(void)
 				item_ptr = item_ptr->ptr;
 			}
 			system("cls");
-			printf("Старый тип товара : %s\n--------------\n", item_ptr->type);
+			printf("РЎС‚Р°СЂС‹Р№ С‚РёРї С‚РѕРІР°СЂР° : %s\n--------------\n", item_ptr->type);
 			for (i = 0; i < COUNT_CATEGORIES; i++)
 			{
 				printf("[%d] %s\n", i + 1, &categories[i]);
 			}
-			printf("Введите новый тип товара : ");
+			printf("Р’РІРµРґРёС‚Рµ РЅРѕРІС‹Р№ С‚РёРї С‚РѕРІР°СЂР° : ");
 			scanf("%d", &callback_type);
 			system("cls");
-			printf("Старое название товара : %s\nВведите новое название товара : ", item_ptr->name);
+			printf("РЎС‚Р°СЂРѕРµ РЅР°Р·РІР°РЅРёРµ С‚РѕРІР°СЂР° : %s\nР’РІРµРґРёС‚Рµ РЅРѕРІРѕРµ РЅР°Р·РІР°РЅРёРµ С‚РѕРІР°СЂР° : ", item_ptr->name);
 			scanf("%s", &callback_name);
 			system("cls");
-			printf("Старая цена: %d\nВведите новую цену товара : ", item_ptr->price);
+			printf("РЎС‚Р°СЂР°СЏ С†РµРЅР°: %d\nР’РІРµРґРёС‚Рµ РЅРѕРІСѓСЋ С†РµРЅСѓ С‚РѕРІР°СЂР° : ", item_ptr->price);
 			scanf("%d", &callback_price);
 			item_ptr->price = callback_price;
 			i = -1;
@@ -435,11 +435,11 @@ void main(void)
 			system("cls");
 			if (!itemNum)
 			{
-				printf("Нет товаров\n");
+				printf("РќРµС‚ С‚РѕРІР°СЂРѕРІ\n");
 				system("pause");
 				break;
 			}
-			printf("Выберите товар, который хотите удалить : \n");
+			printf("Р’С‹Р±РµСЂРёС‚Рµ С‚РѕРІР°СЂ, РєРѕС‚РѕСЂС‹Р№ С…РѕС‚РёС‚Рµ СѓРґР°Р»РёС‚СЊ : \n");
 			item_ptr = head_ptr;
 			i = 1;
 			while (item_ptr != NULL)
@@ -468,12 +468,12 @@ void main(void)
 			system("cls");
 			if (!itemNum)
 			{
-				printf("Нет товаров\n");
+				printf("РќРµС‚ С‚РѕРІР°СЂРѕРІ\n");
 				system("pause");
 				break;
 			}
-			printf("Выберите по какому критерию выводить товары : \n");
-			printf("[1] По названию\n[2] По типу\n");
+			printf("Р’С‹Р±РµСЂРёС‚Рµ РїРѕ РєР°РєРѕРјСѓ РєСЂРёС‚РµСЂРёСЋ РІС‹РІРѕРґРёС‚СЊ С‚РѕРІР°СЂС‹ : \n");
+			printf("[1] РџРѕ РЅР°Р·РІР°РЅРёСЋ\n[2] РџРѕ С‚РёРїСѓ\n");
 			scanf("%d", &callback_printType);
 			system("cls");
 			structFor(&head_ptr, callback_printType, itemNum);
@@ -483,9 +483,9 @@ void main(void)
 			{
 				printf("------[%d]------\n", i);
 				printf("ID: %d\n", item_ptr->id);
-				printf("Тип: %s\n", item_ptr->type);
-				printf("Название: %s\n", item_ptr->name);
-				printf("Цена: %d\n", item_ptr->price);
+				printf("РўРёРї: %s\n", item_ptr->type);
+				printf("РќР°Р·РІР°РЅРёРµ: %s\n", item_ptr->name);
+				printf("Р¦РµРЅР°: %d\n", item_ptr->price);
 				i++;
 				item_ptr = item_ptr->ptr;
 			}
@@ -495,7 +495,7 @@ void main(void)
 			system("cls");
 			if (!itemNum)
 			{
-				printf("Нет товаров\n");
+				printf("РќРµС‚ С‚РѕРІР°СЂРѕРІ\n");
 				system("pause");
 				break;
 			}
@@ -503,7 +503,7 @@ void main(void)
 			{
 				printf("[%d] %s\n", i + 1, &categories[i]);
 			}
-			printf("Выберите типы товаров для минимальной корзины\nВводите по одному типу. Когда закончите выбор, введите 0\n");
+			printf("Р’С‹Р±РµСЂРёС‚Рµ С‚РёРїС‹ С‚РѕРІР°СЂРѕРІ РґР»СЏ РјРёРЅРёРјР°Р»СЊРЅРѕР№ РєРѕСЂР·РёРЅС‹\nР’РІРѕРґРёС‚Рµ РїРѕ РѕРґРЅРѕРјСѓ С‚РёРїСѓ. РљРѕРіРґР° Р·Р°РєРѕРЅС‡РёС‚Рµ РІС‹Р±РѕСЂ, РІРІРµРґРёС‚Рµ 0\n");
 			i = 0;
 			do
 			{
@@ -513,7 +513,7 @@ void main(void)
 					for (int j = 0; j < i; j++)
 						if (callback_basketTypes[j] == callback_basketTypes[i])
 						{
-							printf("Такой тип товара уже лежит в корзине. Выберите другой или закончите выбор.\n");
+							printf("РўР°РєРѕР№ С‚РёРї С‚РѕРІР°СЂР° СѓР¶Рµ Р»РµР¶РёС‚ РІ РєРѕСЂР·РёРЅРµ. Р’С‹Р±РµСЂРёС‚Рµ РґСЂСѓРіРѕР№ РёР»Рё Р·Р°РєРѕРЅС‡РёС‚Рµ РІС‹Р±РѕСЂ.\n");
 							i--;
 						}
 				}
@@ -543,9 +543,9 @@ void main(void)
 				{
 					printf("------[%d]------\n", i);
 					printf("ID: %d\n", max_ptr->id);
-					printf("Тип: %s\n", max_ptr->type);
-					printf("Название: %s\n", max_ptr->name);
-					printf("Цена: %d\n", max_ptr->price);
+					printf("РўРёРї: %s\n", max_ptr->type);
+					printf("РќР°Р·РІР°РЅРёРµ: %s\n", max_ptr->name);
+					printf("Р¦РµРЅР°: %d\n", max_ptr->price);
 				}
 
 			}
