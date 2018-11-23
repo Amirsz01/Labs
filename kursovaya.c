@@ -173,7 +173,8 @@ void inputData(struct item** headRef , int *countItemsRet, int *itemNumRet)
 	fscanf(fpin, "%d\n", &countItems);
 	while (!feof(fpin))// цикл до конца входного файла
 	{
-		fscanf(fpin, "%s\n", line);
+		//fgets(line, sizeof(line), fpin);
+		fscanf(fpin, "%100[^\r\n]\n", line);
 		if (line == NULL)
 			break; // файл исчерпан
 		if (*line == '{')
@@ -255,16 +256,17 @@ void main(void)
 	/* Объявление начала списка*/
 	struct item* item_ptr = NULL;
 	/* Объявление строковых переменных*/
-	char callback_name[MAXLEN];
+	char callback_main;
+	char callback_name[MAXLEN] = {NULL};
 	char categories[COUNT_CATEGORIES][50] = {"Хлеб","Молочное", "Мясное", "Печеное", "Напитки", "Сладости", "Овощи", "Фрукты"};
 	/* Объявление числовых переменных*/
 	int itemNum;
 	int countItems;
 	int i=0;
 	int callback_type;
-	int callback_main;
 	int callback_price;
 	int callback_item;
+	int incorrect = YES;
 	int callback_printType;
 	int callback_basketTypes[COUNT_CATEGORIES+1];
 	/* Объявление параметров консоли*/
@@ -275,22 +277,43 @@ void main(void)
 	{
 		system("cls");
 		printf("[0] Выйти из программы\n[1] Добавить новый товар\n[2] Редактировать товар\n[3] Удалить товар\n[4] Вывести товары в алфавитном порядке\n[5] Подобрать минимальный набор товаров\nВыберите пункт из списка : ");
-		scanf("%d", &callback_main);
+		scanf("%s", &callback_main);
 		switch (callback_main) {
-		case 1: 
+		case '1': 
 			system("cls");
 			for (i = 0; i < COUNT_CATEGORIES; i++) 
 			{
 				printf("[%d] %s\n", i+1, &categories[i]);
 			}
+			incorrect = YES;
 			printf("Выберите тип товара : ");
-			scanf("%d", &callback_type);
+			do
+			{
+				if (!incorrect) 
+					printf("Неправильный тип товара, выберите новый : ");
+				incorrect = NO;
+				scanf("%d", &callback_type);
+			} while (callback_type > COUNT_CATEGORIES || callback_type < 1);
 			system("cls");
+			incorrect = YES;
 			printf("Введите название товара : ");
-			scanf("%s", &callback_name);
+			do
+			{
+				if (!incorrect)
+					printf("Неправильное название товара, выберите новое : ");
+				incorrect = NO;
+				scanf("\n%100[^\r\n]", &callback_name);
+			} while (*callback_name == '\n' || *callback_name == '\0');
 			system("cls");
 			printf("Введите цену товара : ");
-			scanf("%d", &callback_price);
+			incorrect = YES;
+			do
+			{
+				if (!incorrect)
+					printf("Неправильная цена! Введите число от 1 до 100000 : ");
+				incorrect = NO;
+				scanf("%d", &callback_price);
+			} while (callback_price < 1 || callback_price > 100000);
 			countItems++;
 			if (itemNum == 0)
 			{
@@ -316,7 +339,7 @@ void main(void)
 			} while (categories[callback_type - 1][i] != '\0');
 			itemNum++;
 			break;
-		case 2:
+		case '2':
 			system("cls");
 			if (!itemNum)
 			{
@@ -346,13 +369,34 @@ void main(void)
 				printf("[%d] %s\n", i + 1, &categories[i]);
 			}
 			printf("Введите новый тип товара : ");
-			scanf("%d", &callback_type);
+			incorrect = YES;
+			do
+			{
+				if (!incorrect)
+					printf("Неправильный тип товара, выберите новый : ");
+				incorrect = NO;
+				scanf("%d", &callback_type);
+			} while (callback_type > COUNT_CATEGORIES || callback_type < 1);
 			system("cls");
+			incorrect = YES;
 			printf("Старое название товара : %s\nВведите новое название товара : ", item_ptr->name);
-			scanf("%s", &callback_name);
+			do
+			{
+				if (!incorrect)
+					printf("Неправильное название товара, выберите новое : ");
+				incorrect = NO;
+				scanf("\n%100[^\r\n]", &callback_name);
+			} while (*callback_name == '\n' || *callback_name == '\0');
 			system("cls");
 			printf("Старая цена: %d\nВведите новую цену товара : ", item_ptr->price);
-			scanf("%d", &callback_price);
+			incorrect = YES;
+			do
+			{
+				if (!incorrect)
+					printf("Неправильная цена! Введите число от 1 до 100000 : ");
+				incorrect = NO;
+				scanf("%d", &callback_price);
+			} while (callback_price < 1 || callback_price > 100000);
 			item_ptr->price = callback_price;
 			i = -1;
 			do
@@ -368,7 +412,7 @@ void main(void)
 				item_ptr->type[i] = categories[callback_type - 1][i];
 			} while (categories[callback_type - 1][i] != '\0');
 			break;
-		case 3:
+		case '3':
 			system("cls");
 			if (!itemNum)
 			{
@@ -406,7 +450,7 @@ void main(void)
 				head_ptr = init(0);
 			}
 			break;
-		case 4:
+		case '4':
 			system("cls");
 			if (!itemNum)
 			{
@@ -433,7 +477,7 @@ void main(void)
 			}
 			system("pause");
 			break;
-		case 5:
+		case '5':
 			system("cls");
 			if (!itemNum)
 			{
@@ -496,7 +540,7 @@ void main(void)
 		default:
 			break;
 		};
-	} while (callback_main);
+	} while (callback_main != '0');
 	if (itemNum) 
 	{
 		recordData(&head_ptr, countItems);
