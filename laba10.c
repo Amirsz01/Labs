@@ -4,9 +4,11 @@
 #define YES 1
 #define NO 0
 #define MAXLEN 1000 
-#define NLINES 10
-void main(void)
+#define NLINES 100
+int main(void)
 {
+	system("chcp 1251");
+	system("cls");
 	char str[32];
 	FILE *f;
 	char* strs;
@@ -39,4 +41,5 @@ void main(void)
 		printf("%s", strs + i * MAXLEN);
 	}
 	system("pause");
+	return 0;
 }
